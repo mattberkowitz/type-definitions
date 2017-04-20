@@ -26,6 +26,10 @@ export default function genericTypeTest(type, expectMap) {
         expect(type.isOfType(genericTypeValues[key])).toBe(expectedValues[key]);
       })
     })
+
+    test('create does not return undefined', () => {
+      expect(type.create()).not.toBe(undefined);
+    })
   }
 
   doTests(type, expectMap);

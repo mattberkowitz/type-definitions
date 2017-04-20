@@ -6,6 +6,10 @@ export default class ObjectType extends BaseType {
     return typeof val === 'object' && !Array.isArray(val) && val !== null;
   }
 
+  static get defaultValue() {
+    return {};
+  }
+
   static withDefinition(definition) {
     const coercedDefinition = Object.keys(definition).reduce((o, key) => {
       o[key] = coerce(definition[key]);
@@ -18,6 +22,25 @@ export default class ObjectType extends BaseType {
 
       static get strict() {
         return strict(this);
+      }
+
+      static get defaultValue() {
+        const base = super.defaultValue;
+        Object.keys(this.properties).forEach((key) => {
+          // console.log(key, this.properties[key].defaultValue)
+          Object.assign(base, {
+            [key]: this.properties[key].defaultValue
+          });
+        });
+        return base;
+      }
+
+      static create(val) {
+        const base = this.defaultValue;
+        if (typeof val === 'object') {
+          Object.assign(base, val);
+        }
+        return super.create(base);
       }
 
       static isOfType(val) {

@@ -9,6 +9,29 @@ export class BaseType {
   static get optional() {
     return optional(this);
   }
+  static get defaultValue() {
+    return undefined;
+  }
+  static create(val = this.defaultValue) {
+    // console.log(val, typeof val)
+    if (!this.isOfType(val)) {
+      throw `The provided default value "${val}" does not match the type definition`;
+    }
+    return val;
+  }
+  static withDefault(val) {
+    if (!this.isOfType(val)) {
+      throw `Supplied default "${val}" is not a valid value for type`
+    }
+    return class TypeWithDefault extends this {
+      static get definedDefaultValue() {
+        return val;
+      }
+      static get defaultValue() {
+        return this.definedDefaultValue;
+      }
+    }
+  }
 }
 
 export class UnionType extends BaseType {
@@ -25,6 +48,9 @@ export class UnionType extends BaseType {
 }
 
 export class AnyType extends BaseType {
+  static get defaultValue() {
+    return null;
+  }
   static isOfType(val) {
     return val !== undefined;
   }
@@ -34,6 +60,9 @@ export function optional(type) {
   return class OptionalType extends coerce(type) {
     static isOfType(val) {
       return super.isOfType(val) || val === undefined || val === null;
+    }
+    static get defaultValue() {
+      return super.definedDefaultValue === undefined ? null : super.defaultValue;
     }
   };
 }
@@ -86,6 +115,13 @@ export function unionOf(...unionTypes) {
   return class DefinedUnionType extends UnionType {
     static get types() {
       return coercedTypes;
+    }
+    static get defaultValue() {
+      let val = super.defaultValue;
+      if (val === undefined) {
+        val = this.types.map((t) => t.defaultValue).find((tv) => tv !== undefined);
+      }
+      return val;
     }
   };
 }

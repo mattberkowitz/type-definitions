@@ -6,6 +6,10 @@ export default class ArrayType extends BaseType {
     return Array.isArray(val);
   }
 
+  static get defaultValue() {
+    return [];
+  }
+
   static ofType(...memberType) {
     const coercedType = memberType.length === 1 ?
       coerce(memberType[0]) :
