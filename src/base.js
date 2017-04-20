@@ -5,7 +5,6 @@ export class BaseType {
     console.error(`An isOfType function needs to be defined for "${this.name}"`);
     return false;
   }
-
   static get optional() {
     return optional(this);
   }
@@ -15,13 +14,13 @@ export class BaseType {
   static create(val = this.defaultValue) {
     // console.log(val, typeof val)
     if (!this.isOfType(val)) {
-      throw `The provided default value "${val}" does not match the type definition`;
+      throw `The provided default value ${JSON.stringify(val)} does not match the type definition`;
     }
     return val;
   }
   static withDefault(val) {
     if (!this.isOfType(val)) {
-      throw `Supplied default "${val}" is not a valid value for type`
+      throw `Supplied default ${JSON.stringify(val)} is not a valid value for type`
     }
     return class TypeWithDefault extends this {
       static get definedDefaultValue() {

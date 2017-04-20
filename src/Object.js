@@ -35,10 +35,20 @@ export default class ObjectType extends BaseType {
         return base;
       }
 
-      static create(val) {
+      static create(val = {}) {
         const base = this.defaultValue;
         if (typeof val === 'object') {
-          Object.assign(base, val);
+          Object.keys(val).forEach((key) => {
+            if (this.properties.hasOwnProperty(key)) {
+              Object.assign(base, {
+                [key]: this.properties[key].create(val[key])
+              })
+            } else {
+              Object.assign(base, {
+                [key]: val[key]
+              })
+            }
+          })
         }
         return super.create(base);
       }
@@ -77,6 +87,14 @@ export function strict(type) {
     static isOfType(val) {
       return super.isOfType(val)
         && Object.keys(val).every(key => !!this.properties[key]);
+    }
+    static create(val = {}) {
+      return super.create(Object.keys(val).reduce((o, key) => {
+        if (this.properties.hasOwnProperty(key)) {
+          o[key] = val[key];
+        }
+        return o
+      }, {}));
     }
   }
 }
