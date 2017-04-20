@@ -7,7 +7,7 @@
     "build": "webpack",
     "test": "jest",
     "coverage": "jest --coverage",
-    "prepublish": "rimraf dist && webpack"
+    "prepublish": "jest && rimraf dist && webpack"
   },
   "repository": {
     "type": "git",
