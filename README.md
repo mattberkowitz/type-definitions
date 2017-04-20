@@ -255,7 +255,7 @@ const aHashOfStrings = defineType(types.Object.keyValuePair(String));
 
 ### Any
 
-Validates true for any value (excluding `null`/`undefined`).
+Validates true for any value (allows `null` but excludes `undefined`).
 
 Using package type:
 

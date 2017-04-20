@@ -26,7 +26,7 @@ export class UnionType extends BaseType {
 
 export class AnyType extends BaseType {
   static isOfType(val) {
-    return val !== undefined && val !== null;
+    return val !== undefined;
   }
 }
 
