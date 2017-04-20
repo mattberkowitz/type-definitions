@@ -1,0 +1,45 @@
+{
+  "name": "type-definitions",
+  "version": "0.1.0",
+  "description": "Define and validate types in js",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "jest",
+    "coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattberkowitz/type-definitions.git"
+  },
+  "keywords": [
+    "type-definition",
+    "type",
+    "schema",
+    "validate"
+  ],
+  "author": "Matt Berkowtiz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mattberkowitz/type-definitions/issues"
+  },
+  "devDependencies": {
+    "babel-jest": "^19.0.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-es2015": "^6.22.0",
+    "jest": "^19.0.2",
+    "webpack": "^2.4.1"
+  },
+  "homepage": "https://github.com/mattberkowitz/type-definitions#readme",
+  "jest": {
+    "testMatch": [
+      "**/__tests__/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**.js",
+      "!**/__tests__/**",
+      "!**/node_modules/**",
+      "!src/index.js"
+    ]
+  }
+}
