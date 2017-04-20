@@ -22,14 +22,27 @@ export default function genericTypeTest(type, expectMap) {
       return o;
     }, {}), expectMap);
     Object.keys(genericTypeValues).forEach((key) => {
-      test(`${expectedValues[key] ? 'matches' : 'does not match'} ${key}`, () => {
+      test(`${expectedValues[key] ? 'matches' : 'does not match'} ${JSON.stringify(genericTypeValues[key])} (${key})`, () => {
         expect(type.isOfType(genericTypeValues[key])).toBe(expectedValues[key]);
-      })
-    })
-
+      });
+    });
     test('create does not return undefined', () => {
       expect(type.create()).not.toBe(undefined);
-    })
+    });
+    describe('.withDefaultValue(val)', () => {
+      Object.keys(genericTypeValues).forEach((key) => {
+        if (expectedValues[key]) {
+          test(`A default value of ${JSON.stringify(genericTypeValues[key])} works`, () => {
+            expect(() => type.withDefault(genericTypeValues[key])).not.toThrow();
+            expect(type.withDefault(genericTypeValues[key]).create()).toEqual(genericTypeValues[key]);
+          });
+        } else {
+          test(`A default value of ${JSON.stringify(genericTypeValues[key])} throws an error`, () => {
+            expect(() => type.withDefault(genericTypeValues[key])).toThrow();
+          });
+        }
+      });
+    });
   }
 
   doTests(type, expectMap);
