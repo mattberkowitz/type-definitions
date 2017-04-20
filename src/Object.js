@@ -45,7 +45,7 @@ export default class ObjectType extends BaseType {
 export function strict(type) {
   const coercedType = coerce(type);
 
-  if (!(coercedType instanceof ObjectType)) {
+  if (!(coercedType.prototype instanceof ObjectType)) {
     console.error('strict() is only intended for use with objects');
     return type;
   }
