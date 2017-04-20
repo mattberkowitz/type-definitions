@@ -64,7 +64,7 @@ complex.isOfType({
 
 This function will process the input and return the representation as a class
 with an `isOfType` static function. It is primarily for coercing native
-representations, and will have no affect when passed on the the package-defined
+representations, and will have no affect when passed the package-defined
 types. Therefore it's always good to wrap your definitions in this so that they
 will support as much as possible.
 
