@@ -5,7 +5,8 @@ import {
 
   coerce,
   unionOf,
-  optional
+  optional,
+  defaultValue
 } from './base';
 
 import ArrayType from './Array';
@@ -30,5 +31,6 @@ export {
   unionOf,
   optional,
   strict,
+  defaultValue,
   types
 }

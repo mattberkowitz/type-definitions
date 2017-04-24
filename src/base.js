@@ -19,17 +19,7 @@ export class BaseType {
     return val;
   }
   static withDefault(val) {
-    if (!this.isOfType(val)) {
-      throw `Supplied default ${JSON.stringify(val)} is not a valid value for type`
-    }
-    return class TypeWithDefault extends this {
-      static get definedDefaultValue() {
-        return val;
-      }
-      static get defaultValue() {
-        return this.definedDefaultValue;
-      }
-    }
+    return defaultValue(this, val);
   }
 }
 
@@ -75,6 +65,13 @@ export function coerce(type) {
         static isOfType(val) {
           return type.isOfType(val);
         }
+        static get defaultValue() {
+          return Object.create(type);
+        }
+        static create(...params) {
+          console.warn('.create() doesn\'t work well with custom classes, this probably isn\'t doing what you expect');
+          return super.create(...params)
+        }
       }
     }
   }
@@ -102,6 +99,15 @@ export function coerce(type) {
         static isOfType(val) {
           return val instanceof type;
         }
+
+        static get defaultValue() {
+          return Object.create(type);
+        }
+
+        static create(...params) {
+          console.warn('.create() doesn\'t work well with custom classes, this probably isn\'t doing what you expect');
+          return super.create(...params)
+        }
       };
     }
   }
@@ -123,4 +129,18 @@ export function unionOf(...unionTypes) {
       return val;
     }
   };
+}
+
+export function defaultValue(type, val) {
+  if (!type.isOfType(val)) {
+    throw `Supplied default ${JSON.stringify(val)} is not a valid value for type`
+  }
+  return class TypeWithDefault extends type {
+    static get definedDefaultValue() {
+      return val;
+    }
+    static get defaultValue() {
+      return this.definedDefaultValue;
+    }
+  }
 }
